@@ -16,10 +16,23 @@ export default function AuthenticateESP() {
     }
   }
 
+  const esp = () => {
+    switch (search.substring(1)) {
+      case 'mailgun':
+        return 'Mailgun'
+      case 'mailchimp':
+        return 'MailChimp'
+      case 'sendgrid':
+        return 'SendGrid'
+      default:
+        throw Error(`Invalid ESP '${search}'`)
+    }
+  }
+
   return (
     <>
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-6">Mailchimp</h1>
+        <h1 className="text-2xl font-bold mb-6">{esp()}</h1>
         <h2 className="text-xl mb-4">Authentication</h2>
         <form id="authForm">
           {renderFields()}
