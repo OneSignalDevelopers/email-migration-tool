@@ -1,4 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Link } from '@remix-run/react';
+import { useState } from 'react';
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,35 +9,43 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+const emailServiceProviders = ["Mailgun", "MailChimp", "SendGrid"]
+
 export default function Index() {
+  const [selection, setSelection] = useState<string | null>(null)
+
+  const onChange = (e: React.SyntheticEvent<HTMLInputElement, Event>) => {
+    console.log(e)
+    setSelection(e.currentTarget.value)
+  }
+
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+
+    <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold mb-6">Email Migration Tool</h1>
+      <form id="emailProviderForm">
+        <fieldset className='pb-6'>
+          <legend className="text-xl mb-4">Select email service provider</legend>
+          <div className="space-y-4">
+            {emailServiceProviders.map(esp => (<label className="flex items-center" key={esp}>
+              <input
+
+                type="radio"
+                name="emailProvider"
+                value={esp.toLowerCase()}
+                onChange={onChange}
+                className="text-blue-600 bg-dark-bg border-gray-600 focus:ring-blue-500"
+              />
+              <span className="ml-2">{esp}</span>
+            </label>))}
+          </div>
+        </fieldset>
+
+        {selection &&
+          <Link className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" to={`/auth-esp?${selection}`}>Continue</Link>
+        }
+      </form>
     </div>
+
   );
 }
