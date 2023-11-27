@@ -1,0 +1,19 @@
+{
+  "name": "emailgen",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:sendgrid": "node ./sendgrid.js",
+    "start:mailgun": "node ./mailgun.js",
+    "start:mailchimp": "node ./mailchimp.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.3.1"
+  }
+}
