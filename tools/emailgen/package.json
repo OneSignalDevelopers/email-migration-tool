@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:sendgrid": "node ./sendgrid.js",
     "start:mailgun": "node ./mailgun.js",
-    "start:mailchimp": "node ./mailchimp.js"
+    "start:mailchimp": "node ./mailchimp.js",
+    "build": "yarn start:sendgrid && yarn start:mailgun && yarn start:mailchimp"
   },
   "keywords": [],
   "author": "",
