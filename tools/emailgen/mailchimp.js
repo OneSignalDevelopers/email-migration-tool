@@ -7,7 +7,7 @@ for (let i = 0; i < 500; i++) {
 }
 
 const csv = convertJsonToCsv(contacts)
-saveContactsToFile(csv, 'audience.csv')
+saveContactsToFile(csv, 'mailchimp.csv')
 
 function createRandomEmail() {
   return {

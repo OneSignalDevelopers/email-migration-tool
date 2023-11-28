@@ -7,7 +7,7 @@ for (let i = 0; i < 1999; i++) {
 }
 
 const csv = convertJsonToCsv(contacts)
-saveContactsToFile(csv, 'contact-list.csv')
+saveContactsToFile(csv, 'sendgrid.csv')
 
 function createRandomEmail() {
   return {
