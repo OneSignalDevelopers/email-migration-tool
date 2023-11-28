@@ -1,38 +1,44 @@
-# Welcome to Remix!
+# Welcome to Email Migration Tool!
 
-- [Remix Docs](https://remix.run/docs)
+This project simplifies downloading email lists from the following ESPs:
+- [MailChimp](./docs/
+- Mailgun
+- SendGrid
 
 ## Development
 
 From your terminal:
 
 ```sh
-npm run dev
+yarn dev
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+This starts the app in development mode, rebuilding assets on file changes.
 
 ## Deployment
 
 First, build your app for production:
 
 ```sh
-npm run build
+yarn build
 ```
 
 Then run the app in production mode:
 
 ```sh
-npm start
+yarn  start
 ```
 
-Now you'll need to pick a host to deploy it to.
+This tool is currently deployed on Vercel.
 
-### DIY
+## Email Contact List Generator
 
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+Email Migration Tool requires existing email lists in your ESP platform. To create a dummy dataset, use the `emailgen` tool
 
-Make sure to deploy the output of `remix build`
+From the root of the project from your terminal: 
 
-- `build/`
-- `public/build/`
+```sh
+cd tools/emailgen && yarn build
+```
+
+One CSV file will be created per platform.
