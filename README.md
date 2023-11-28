@@ -1,9 +1,9 @@
 # Welcome to Email Migration Tool!
 
 This project simplifies downloading email lists from the following ESPs:
-- [MailChimp](./docs/
-- Mailgun
-- SendGrid
+- [MailChimp](./docs/mailgun/mailgun.md)
+- [Mailgun](./docs/mailgun/mailgun.md)
+- [SendGrid](./docs/sendgrid/sendgrid.md)
 
 ## Development
 
