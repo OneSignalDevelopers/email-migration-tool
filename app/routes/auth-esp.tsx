@@ -1,55 +1,7 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
-import { Link, useLocation } from '@remix-run/react'
-import { Form, useActionData } from '@remix-run/react'
-import { checkDownloadStatus, createContactExport } from '~/common/sendgrid'
+import {} from '~/common/sendgrid'
 
 export default function AuthenticateESP() {
-  const { search } = useLocation()
-  const data = useActionData<typeof action>()
-
-  const renderFields = () => {
-    switch (search.substring(1)) {
-      case 'mailgun':
-        return renderMailgunFields()
-      case 'mailchimp':
-        return renderMailchimpFields()
-      case 'sendgrid':
-        return renderSendgridFields()
-      default:
-        return renderPostResponse()
-    }
-  }
-
-  const esp = () => {
-    switch (search.substring(1)) {
-      case 'mailgun':
-        return 'Mailgun'
-      case 'mailchimp':
-        return 'MailChimp'
-      case 'sendgrid':
-        return 'SendGrid'
-      default:
-        return ''
-    }
-  }
-
-  return (
-    <>
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-6">{esp()}</h1>
-        <h2 className="text-xl mb-4">Authentication</h2>
-        <Form id="authForm" method="post" action="">
-          {renderFields()}
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
-          >
-            Continue
-          </button>
-        </Form>
-      </div>
-    </>
-  )
+  return <></>
 
   function renderMailchimpFields() {
     return (
@@ -151,65 +103,4 @@ export default function AuthenticateESP() {
       </>
     )
   }
-
-  function renderSendgridFields() {
-    return (
-      <>
-        <div className="mb-4">
-          <label
-            htmlFor="onesignal-app-id"
-            className="block text-sm font-medium mb-2"
-          >
-            OneSignal APP ID
-          </label>
-          <input
-            type="text"
-            id="onesignal-app-id"
-            name="onesignal-app-id"
-            className="bg-gray-700 text-white block w-full p-3 rounded-md"
-            placeholder="Enter OneSignal APP ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="sendgrid-api-key"
-            className="block text-sm font-medium mb-2"
-          >
-            Sendgrid API Key
-          </label>
-          <input
-            type="password"
-            id="sendgrid-api-key"
-            name="sendgrid-api-key"
-            className="bg-gray-700 text-white block w-full p-3 rounded-md"
-            placeholder="Enter Sendgrid Info"
-          />
-        </div>
-      </>
-    )
-  }
-
-  function renderPostResponse() {
-    const link = data?.urls ? data.urls[0] : ''
-
-    return link && <Link to={link}>Download...</Link>
-  }
-}
-
-export async function action({ request }: ActionFunctionArgs) {
-  const body = await request.formData()
-  const onesignalAppId = body.get('onesignal-app-id') as string
-  const sendgridApiKey = body.get('sendgrid-api-key') as string
-
-  const data = await createContactExport(
-    sendgridApiKey,
-    'b3be5083-50c9-44b7-bb5e-36a415eeff1a'
-  )
-  if (!data) return
-
-  const download = await checkDownloadStatus(sendgridApiKey, data.id)
-
-  return json({
-    ...download,
-  })
 }

@@ -16,8 +16,10 @@ export default function Index() {
     emailServiceProviders[0].toLowerCase()
   )
 
-  const onChange = (e: React.SyntheticEvent<HTMLInputElement, Event>) =>
+  const onChange = (e: React.SyntheticEvent<HTMLInputElement, Event>) => {
     setSelection(e.currentTarget.value)
+    console.log(e.currentTarget.value)
+  }
 
   return (
     <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -44,14 +46,12 @@ export default function Index() {
           </div>
         </fieldset>
 
-        {selection && (
-          <Link
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
-            to={`/auth-esp?${selection}`}
-          >
-            Continue
-          </Link>
-        )}
+        <Link
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+          to={`/${selection.toLowerCase()}`}
+        >
+          Continue
+        </Link>
       </form>
     </div>
   )
