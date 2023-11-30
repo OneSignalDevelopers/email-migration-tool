@@ -68,7 +68,7 @@ export default function SendgridContactListSelection() {
 
             {selection && (
               <button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold mt-4 py-2 px-4 rounded w-full"
                 onClick={onCreateExportClicked}
               >
                 Create Export
@@ -83,7 +83,13 @@ export default function SendgridContactListSelection() {
   )
 
   function renderDownloadLink() {
-    return downloadUrl && <Link to={downloadUrl}>Download...</Link>
+    return (
+      downloadUrl && (
+        <Link to={downloadUrl} className="mt-6">
+          Download...
+        </Link>
+      )
+    )
   }
 }
 
