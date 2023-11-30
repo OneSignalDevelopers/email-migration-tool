@@ -9,6 +9,7 @@ export default function SendgridContactListSelection() {
   const loaderData = useLoaderData<typeof loader>()
   const [selection, setSelection] = useState('')
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
+  let intervalHandle: number | null = null
 
   const onCreateExportClicked = async () => {
     console.log('Create export clickedd')
@@ -22,9 +23,19 @@ export default function SendgridContactListSelection() {
     }
 
     const exportStatus = await sendgridDao.checkDownloadStatus(data.id)
-    const url = exportStatus?.urls[0]
+    if (exportStatus?.status === 'pending') {
+      if (intervalHandle) return
+      intervalHandle = window.setInterval(async () => {
+        const exportStatus = await sendgridDao.checkDownloadStatus(data.id)
 
-    setDownloadUrl(url || null)
+        if (exportStatus?.status !== 'pending') {
+          intervalHandle = null
+          setDownloadUrl(exportStatus?.urls[0])
+        }
+      }, 5000)
+
+      return
+    }
   }
 
   const onSelectionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -34,7 +45,7 @@ export default function SendgridContactListSelection() {
 
   return (
     <>
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
+      <div className="max-w-md w-full pt-4">
         {actionData && (
           <div>
             <label htmlFor="contact-list-select">
