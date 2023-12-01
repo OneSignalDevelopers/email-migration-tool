@@ -1,18 +1,17 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { Form, Outlet, useActionData, useLoaderData } from '@remix-run/react'
-import { useState } from 'react'
 import {
   mailgunApiKeyKey,
+  mailgunSendingDomainKey,
   onesignalAppIdKey,
   prefsCookie,
+  sendgridApiKeyKey,
 } from '~/common/cookies'
+import { buildMailgunDao } from '~/common/mailgun-dao'
 
 export default function Mailgun() {
   const loaderData = useLoaderData<typeof loader>()
-
-  useActionData<typeof action>()
-
-  const [mailgunApiKey, setMailgunApiKey] = useState(loaderData.mailgunApiKey)
+  const actionData = useActionData<typeof action>()
 
   return (
     <>
@@ -33,6 +32,7 @@ export default function Mailgun() {
               name="onesignal-app-id"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter OneSignal APP ID"
+              value={loaderData.onesignalAppId}
             />
           </div>
           <div className="mb-4">
@@ -48,6 +48,7 @@ export default function Mailgun() {
               name="mailgun-sending-domain"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter Mailgun Sending Domain Name"
+              value={loaderData.sendingDomain}
             />
           </div>
           <div className="mb-4">
@@ -58,13 +59,12 @@ export default function Mailgun() {
               Mailgun API Key
             </label>
             <input
-              type="text"
+              type="password"
               id="mailgun-api-key"
               name="mailgun-api-key"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter Mailgun API Key"
-              value={mailgunApiKey}
-              onChange={e => setMailgunApiKey(e)}
+              value={loaderData.mailgunApiKey}
             />
           </div>
           <button
@@ -74,7 +74,8 @@ export default function Mailgun() {
             Select Contact List
           </button>
         </Form>
-        <Outlet />
+
+        <pre>{JSON.stringify(actionData, null, 2)}</pre>
       </div>
     </>
   )
@@ -84,8 +85,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie')
   const cookie = (await prefsCookie.parse(cookieHeader)) || {}
   const mailgunApiKey = cookie[mailgunApiKeyKey]
+  const sendingDomain = cookie[mailgunSendingDomainKey]
+  const onesignalAppId = cookie[onesignalAppIdKey]
 
-  return json({ mailgunApiKey })
+  return json({ mailgunApiKey, sendingDomain, onesignalAppId })
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -94,14 +97,19 @@ export async function action({ request }: ActionFunctionArgs) {
   const body = await request.formData()
   const onesignalAppId = body.get('onesignal-app-id') as string
   const mailgunApiKey = body.get('mailgun-api-key') as string
+  const sendingDomain = body.get('mailgun-sending-domain') as string
   cookie[mailgunApiKeyKey] = mailgunApiKey
   cookie[onesignalAppIdKey] = onesignalAppId
+  cookie[sendgridApiKeyKey] = sendingDomain
+
+  const mailgunDao = buildMailgunDao(mailgunApiKey, sendingDomain)
+  const list = await mailgunDao.getMailingLists()
 
   return json(
-    {},
+    { list },
     {
       headers: {
-        'Set-Cookie': await cookie.serialize(cookie),
+        'Set-Cookie': await prefsCookie.serialize(cookie),
       },
     }
   )
