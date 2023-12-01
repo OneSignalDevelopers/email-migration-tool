@@ -1,7 +1,11 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { Form, Outlet, useActionData, useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
-import { prefsCookie } from '~/common/persistence'
+import {
+  onesignalAppIdKey,
+  prefsCookie,
+  sendgridApiKeyKey,
+} from '~/common/cookies'
 
 export default function Sendgrid() {
   const loaderData = useLoaderData<typeof loader>()
@@ -66,7 +70,7 @@ export default function Sendgrid() {
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie')
   const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const sendgridApiKey = cookie['sendgrid-api-key']
+  const sendgridApiKey = cookie[sendgridApiKeyKey]
 
   return json({ sendgridApiKey })
 }
@@ -77,14 +81,14 @@ export async function action({ request }: ActionFunctionArgs) {
   const body = await request.formData()
   const onesignalAppId = body.get('onesignal-app-id') as string
   const sendgridApiKey = body.get('sendgrid-api-key') as string
-  cookie['sendgrid-api-key'] = sendgridApiKey
-  cookie['onesignal-app-id'] = onesignalAppId
+  cookie[sendgridApiKeyKey] = sendgridApiKey
+  cookie[onesignalAppIdKey] = onesignalAppId
 
   return json(
     {},
     {
       headers: {
-        'Set-Cookie': await prefsCookie.serialize(cookie),
+        'Set-Cookie': await cookie.serialize(cookie),
       },
     }
   )

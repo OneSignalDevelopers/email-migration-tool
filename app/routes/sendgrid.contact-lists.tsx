@@ -1,8 +1,8 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { Link, useActionData, useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
-import { prefsCookie } from '~/common/persistence'
-import { buildSendgridDao } from '~/common/sendgrid'
+import { prefsCookie, sendgridApiKeyKey } from '~/common/cookies'
+import { buildSendgridDao } from '~/common/sendgrid-dao'
 
 export default function SendgridContactListSelection() {
   const actionData = useActionData<typeof action>()
@@ -96,7 +96,7 @@ export default function SendgridContactListSelection() {
 export async function action({ request }: ActionFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie')
   const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const sendgridApiKey = cookie['sendgrid-api-key']
+  const sendgridApiKey = cookie
   if (!sendgridApiKey) return
 
   const sendgridDao = buildSendgridDao(sendgridApiKey)
@@ -110,7 +110,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie')
   const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const sendgridApiKey = cookie['sendgrid-api-key']
+  const sendgridApiKey = cookie[sendgridApiKeyKey]
 
   return json({ sendgridApiKey })
 }
