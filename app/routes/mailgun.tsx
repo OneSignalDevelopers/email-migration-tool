@@ -32,7 +32,7 @@ export default function Mailgun() {
               name="onesignal-app-id"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter OneSignal APP ID"
-              value={loaderData.onesignalAppId}
+              defaultValue={loaderData.onesignalAppId}
             />
           </div>
           <div className="mb-4">
@@ -48,7 +48,7 @@ export default function Mailgun() {
               name="mailgun-sending-domain"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter Mailgun Sending Domain Name"
-              value={loaderData.sendingDomain}
+              defaultValue={loaderData.sendingDomain}
             />
           </div>
           <div className="mb-4">
@@ -64,7 +64,7 @@ export default function Mailgun() {
               name="mailgun-api-key"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter Mailgun API Key"
-              value={loaderData.mailgunApiKey}
+              defaultValue={loaderData.mailgunApiKey}
             />
           </div>
           <button
