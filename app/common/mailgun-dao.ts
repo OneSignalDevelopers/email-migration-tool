@@ -9,7 +9,7 @@ export const buildMailgunDao = (apiKey: string, sendingDomain: string) => {
         const res = await fetch(endpoint, {
           method: 'GET',
           headers: {
-            Authorization: `Basic api:${apiKey}`,
+            Authorization: `api:${apiKey}`,
           },
         })
 
