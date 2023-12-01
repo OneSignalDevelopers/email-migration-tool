@@ -45,7 +45,7 @@ export default function SendgridContactListSelection() {
 
   return (
     <>
-      <div className="max-w-md w-full pt-4">
+      <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
         {actionData && (
           <div>
             <label htmlFor="contact-list-select">

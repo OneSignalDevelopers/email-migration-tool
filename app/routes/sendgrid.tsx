@@ -14,7 +14,7 @@ export default function Sendgrid() {
 
   return (
     <>
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
+      <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6">Sendgrid</h1>
         <h2 className="text-xl mb-4">Authentication</h2>
         <Form id="authForm" method="post" action={`/sendgrid/contact-lists`}>
