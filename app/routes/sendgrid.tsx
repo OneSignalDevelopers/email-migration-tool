@@ -1,6 +1,5 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
-import { Form, Outlet, useActionData, useLoaderData } from '@remix-run/react'
-import { useState } from 'react'
+import { LoaderFunctionArgs, json } from '@remix-run/node'
+import { Form, Outlet, useLoaderData } from '@remix-run/react'
 import {
   onesignalAppIdKey,
   prefsCookie,
@@ -9,12 +8,6 @@ import {
 
 export default function Sendgrid() {
   const loaderData = useLoaderData<typeof loader>()
-
-  useActionData<typeof action>()
-
-  const [sendgridApiKey, setSendgridApiKey] = useState(
-    loaderData.sendgridApiKey
-  )
 
   return (
     <>
@@ -35,6 +28,7 @@ export default function Sendgrid() {
               name="onesignal-app-id"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter OneSignal APP ID"
+              defaultValue={loaderData.onesginalAppId}
             />
           </div>
           <div className="mb-4">
@@ -50,8 +44,7 @@ export default function Sendgrid() {
               name="sendgrid-api-key"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter Sendgrid Info"
-              value={sendgridApiKey}
-              onChange={e => setSendgridApiKey(e.currentTarget.value)}
+              defaultValue={loaderData.sendgridApiKey}
             />
           </div>
           <button
@@ -71,25 +64,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie')
   const cookie = (await prefsCookie.parse(cookieHeader)) || {}
   const sendgridApiKey = cookie[sendgridApiKeyKey]
+  const onesginalAppId = cookie[onesignalAppIdKey]
 
-  return json({ sendgridApiKey })
-}
-
-export async function action({ request }: ActionFunctionArgs) {
-  const cookieHeader = request.headers.get('Cookie')
-  const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const body = await request.formData()
-  const onesignalAppId = body.get('onesignal-app-id') as string
-  const sendgridApiKey = body.get('sendgrid-api-key') as string
-  cookie[sendgridApiKeyKey] = sendgridApiKey
-  cookie[onesignalAppIdKey] = onesignalAppId
-
-  return json(
-    {},
-    {
-      headers: {
-        'Set-Cookie': await cookie.serialize(cookie),
-      },
-    }
-  )
+  return json({ sendgridApiKey, onesginalAppId })
 }
