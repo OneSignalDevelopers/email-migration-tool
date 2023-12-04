@@ -1,19 +1,20 @@
+# Mailchimp
 
-## Assumptions
+#### Assumptions
 
-- The user is starting from the MailChimp Dashboard
-- The user knows which Audience they'd like to export
-- The user has segmented their audience using Tags
-- The contact list has less than 10k contacts
+- Access to the MailChimp Dashboard.
+- Knowledge of the Audience to export.
+- The audience was segmented using Tags.
+- The contact list contains fewer than 10,000 contacts.
 
-## Instructions
+### Steps
 
-1. Navigate to the Audience page, Audience > Segments
-2. Locate the Segment you'd like to export
-3. Click the context menu button next to the **Edit** button
-4. Choose the **Export as CSV** option. You will be taken to the Audience Export Page
-5. Click the **Export As CSV** button to download a Zip archive of the completed export
-6. Extract the CSV files from the archive
+1. **Audience Page Access**: Go to `Audience > Segments`.
+2. **Segment Selection**: Find the Segment you wish to export.
+3. **Export Option**: Click the context menu next to the **Edit** button.
+4. **Initiate Export**: Select **Export as CSV**. This redirects you to the Audience Export Page.
+5. **Download File**: Click **Export As CSV** to receive a Zip archive.
+6. **Extract Data**: Unzip the archive to access the CSV files.
 
 ## Notes
 
