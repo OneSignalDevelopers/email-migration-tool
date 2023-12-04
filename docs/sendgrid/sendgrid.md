@@ -17,12 +17,12 @@
 
 ###### Step 1
 
-![Pasted image 20231127113245.png](Pasted%20image%2020231127113245.png)
+![Navigating to Contacts page](step-1.png)
 
 ###### Step 3
 
-![Pasted image 20231127113507.png](Pasted%20image%2020231127113507.png)
+![Selecting Contact List to export](step-3.png)
 
 ###### Step 5
 
-![Pasted image 20231127114139.png](Pasted%20image%2020231127114139.png)
+![Downloading the exported CSV](step-5.png)
