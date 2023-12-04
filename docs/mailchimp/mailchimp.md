@@ -17,18 +17,18 @@
 
 ## Notes
 
-###### Step 2
+###### Step 1
 
-![Pasted image 20231127124549.png](Pasted%20image%2020231127124549.png)
+![Navigating to Segments](step-1.png)
 
 ###### Step 3
 
-![Screenshot 2023-11-27 at 12.47.17 PM.png](Screenshot%202023-11-27%20at%2012.47.17 PM.png)
+![Selecting audience to export](step-3.png)
 
 ###### Step 4
 
-![Screenshot 2023-11-27 at 12.48.25 PM.png](Screenshot%202023-11-27%20at%2012.48.25 PM.png)
+![Creating an export](step-4.png)
 
 ###### Step 5
 
-![Screenshot 2023-11-27 at 12.50.52 PM.png](Screenshot%202023-11-27%20at%2012.50.52 PM.png)
+![Download exported CSV](step-5.png)
