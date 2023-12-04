@@ -6,3 +6,15 @@ node_modules
 .env
 *.csv
 .DS_STORE
+docs/mailchimp/step-1-50.png
+docs/mailchimp/step-3-50.png
+docs/mailchimp/step-4-50.png
+docs/mailchimp/step-5-50.png
+docs/mailgun/step-1-50.png
+docs/mailgun/step-3-50.png
+docs/mailgun/step-4-50.png
+docs/mailgun/step-4.1-50.png
+docs/mailgun/step-5-50.png
+docs/sendgrid/step-1-50.png
+docs/sendgrid/step-3-50.png
+docs/sendgrid/step-5-50.png
