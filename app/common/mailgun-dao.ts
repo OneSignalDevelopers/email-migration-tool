@@ -6,10 +6,11 @@ export const buildMailgunDao = (apiKey: string, sendingDomain: string) => {
       const endpoint = `${api}/lists/pages`
 
       try {
+        const auth = Buffer.from(`api:${apiKey}`).toString('base64')
         const res = await fetch(endpoint, {
           method: 'GET',
           headers: {
-            Authorization: `api:${apiKey}`,
+            Authorization: `Basic ${auth}`,
           },
         })
 
