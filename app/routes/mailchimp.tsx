@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
-import { Form, Outlet, useActionData, useLoaderData } from '@remix-run/react'
-import { useState } from 'react'
+import { Form, useActionData, useLoaderData } from '@remix-run/react'
 import {
+  loadCookies,
   mailchimpApiKeyKey as mailchimpApiKeyCookieKey,
   mailchimpServerPrefixKey,
   onesignalAppIdKey,
@@ -48,7 +48,7 @@ export default function Mailchimp() {
               name="mailchimp-server-prefix"
               className="bg-gray-700 text-white block w-full p-3 rounded-md"
               placeholder="Enter Mailchimp Server Prefix"
-              value={loaderData.serverPrefix}
+              value={loaderData.mailchimpServerPrefix}
             />
           </div>
           <div className="mb-4">
@@ -81,13 +81,10 @@ export default function Mailchimp() {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const cookieHeader = request.headers.get('Cookie')
-  const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const mailgunApiKey = cookie[mailchimpApiKeyCookieKey]
-  const onesignalAppId = cookie[onesignalAppIdKey]
-  const serverPrefix = cookie[mailchimpServerPrefixKey]
+  const { mailgunApiKey, onesignalAppId, mailchimpServerPrefix } =
+    await loadCookies(request)
 
-  return json({ mailgunApiKey, onesignalAppId, serverPrefix })
+  return json({ mailgunApiKey, onesignalAppId, mailchimpServerPrefix })
 }
 
 export async function action({ request }: ActionFunctionArgs) {

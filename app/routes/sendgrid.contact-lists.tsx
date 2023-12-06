@@ -1,19 +1,17 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
-import { Link, useActionData, useLoaderData } from '@remix-run/react'
+import { LoaderFunctionArgs, json } from '@remix-run/node'
+import { Link, useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
-import { prefsCookie, sendgridApiKeyKey } from '~/common/cookies'
+import { loadCookies } from '~/common/cookies'
 import { buildSendgridDao } from '~/common/sendgrid-dao'
 
 export default function SendgridContactListSelection() {
-  const actionData = useActionData<typeof action>()
-  const loaderData = useLoaderData<typeof loader>()
+  const { sendgridApiKey, audiences } = useLoaderData<typeof loader>()
   const [selection, setSelection] = useState('')
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
-  let intervalHandle: number | null = null
 
+  let intervalHandle: number | null = null
   const onCreateExportClicked = async () => {
     console.log('Create export clickedd')
-    const { sendgridApiKey } = loaderData
     if (!sendgridApiKey) return
 
     const sendgridDao = buildSendgridDao(sendgridApiKey)
@@ -46,38 +44,36 @@ export default function SendgridContactListSelection() {
   return (
     <>
       <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
-        {actionData && (
-          <div>
-            <label htmlFor="contact-list-select">
-              Choose a Contact List for export:
-            </label>
-            <select
-              name="contact-list-select"
-              className="bg-gray-700 text-white py-2 px-4 w-full"
-              onChange={onSelectionChanged}
-            >
-              <option key="---" value="">
-                --Please choose an ESP--
+        <div>
+          <label htmlFor="contact-list-select">
+            Choose a Contact List for export:
+          </label>
+          <select
+            name="contact-list-select"
+            className="bg-gray-700 text-white py-2 px-4 w-full"
+            onChange={onSelectionChanged}
+          >
+            <option key="---" value="">
+              --Please choose an Audience--
+            </option>
+            {audiences.map((list: any) => (
+              <option key={list.id} value={list.id}>
+                {list.name}
               </option>
-              {actionData.lists?.map((list: any) => (
-                <option key={list.id} value={list.id}>
-                  {list.name}
-                </option>
-              ))}
-            </select>
+            ))}
+          </select>
 
-            {selection && (
-              <button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold mt-4 py-2 px-4 rounded w-full"
-                onClick={onCreateExportClicked}
-              >
-                Create Export
-              </button>
-            )}
+          {selection && (
+            <button
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold mt-4 py-2 px-4 rounded w-full"
+              onClick={onCreateExportClicked}
+            >
+              Create Export
+            </button>
+          )}
 
-            {downloadUrl && renderDownloadLink()}
-          </div>
-        )}
+          {downloadUrl && renderDownloadLink()}
+        </div>
       </div>
     </>
   )
@@ -93,24 +89,15 @@ export default function SendgridContactListSelection() {
   }
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const cookieHeader = request.headers.get('Cookie')
-  const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const sendgridApiKey = cookie
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { sendgridApiKey } = await loadCookies(request)
   if (!sendgridApiKey) return
 
   const sendgridDao = buildSendgridDao(sendgridApiKey)
   const lists = await sendgridDao.getContactLists()
 
   return json({
-    lists: lists?.data,
+    audiences: lists?.data || [],
+    sendgridApiKey,
   })
-}
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const cookieHeader = request.headers.get('Cookie')
-  const cookie = (await prefsCookie.parse(cookieHeader)) || {}
-  const sendgridApiKey = cookie[sendgridApiKeyKey]
-
-  return json({ sendgridApiKey })
 }
