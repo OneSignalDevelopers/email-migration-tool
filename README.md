@@ -1,9 +1,4 @@
-# Welcome to Email Migration Tool!
-
-This project simplifies downloading email lists from the following ESPs:
-- [MailChimp](./docs/mailgun/mailgun.md)
-- [Mailgun](./docs/mailgun/mailgun.md)
-- [SendGrid](./docs/sendgrid/sendgrid.md)
+# Email Migration Tool
 
 ## Development
 
@@ -30,15 +25,3 @@ yarn  start
 ```
 
 This tool is currently deployed on Vercel.
-
-## Email Contact List Generator
-
-Email Migration Tool requires existing email lists in your ESP platform. To create a dummy dataset, use the `emailgen` tool
-
-From the root of the project from your terminal: 
-
-```sh
-cd tools/emailgen && yarn build
-```
-
-One CSV file will be created per platform.
