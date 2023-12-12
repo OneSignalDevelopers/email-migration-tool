@@ -13,13 +13,10 @@ export default function MailgunMailingListSelection() {
   const actionData = useActionData<typeof action>()
   const [selection, setSelection] = useState('')
 
-  const onSelectionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('Selection changed')
+  const onSelectionChanged = (event: React.ChangeEvent<HTMLSelectElement>) =>
     setSelection(event.currentTarget.value)
-  }
 
   const onCreateExportRecipientClicked = async () => {
-    console.log('Button Clicked')
     const apiKey = actionData?.mailgunApiKey
     const sendingDomain = actionData?.mailgunSendingDomain
 
@@ -28,7 +25,7 @@ export default function MailgunMailingListSelection() {
     const dao = buildMailgunDao(apiKey, sendingDomain)
     const exportStatus = await dao.getMailingListVerificationStatus()
 
-    console.log(exportStatus)
+    console.log('Verification status', exportStatus)
   }
 
   return (

@@ -1,10 +1,10 @@
 export const buildMailgunDao = (apiKey: string, sendingDomain: string) => {
   const api = 'https://api.mailgun.net/v3'
-  const auth = Buffer.from(`api:${apiKey}`).toString('base64')
 
   return {
     getMailingLists: async () => {
       try {
+        const auth = Buffer.from(`api:${apiKey}`).toString('base64')
         const endpoint = `${api}/lists/pages`
         const res = await fetch(endpoint, {
           method: 'GET',
@@ -23,11 +23,12 @@ export const buildMailgunDao = (apiKey: string, sendingDomain: string) => {
     },
     getMailingListVerificationStatus: async () => {
       try {
+        debugger
         const endpoint = `${api}/domains/${sendingDomain}`
         const res = await fetch(endpoint, {
           method: 'GET',
           headers: {
-            Authorization: `Basic ${auth}`,
+            Authorization: `Basic ${btoa(`api:${apiKey}`)}`,
           },
         })
 

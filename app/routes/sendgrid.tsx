@@ -14,7 +14,7 @@ export default function Sendgrid() {
       <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6">Sendgrid</h1>
         <h2 className="text-xl mb-4">Authentication</h2>
-        <Form id="authForm" method="post" action={`/sendgrid/contact-lists`}>
+        <Form id="authForm" method="post" action={`/sendgrid/download`}>
           <div className="mb-4">
             <label
               htmlFor="onesignal-app-id"
