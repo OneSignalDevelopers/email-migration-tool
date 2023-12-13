@@ -9,7 +9,7 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-const emailServiceProviders = ['MailChimp', 'Mailgun', 'SendGrid']
+const emailServiceProviders = ['MailChimp', 'SendGrid']
 
 export default function Index() {
   const [selection, setSelection] = useState<string>(
