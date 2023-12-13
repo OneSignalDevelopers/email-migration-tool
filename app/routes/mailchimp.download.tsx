@@ -1,6 +1,7 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { Link, Outlet, useActionData } from '@remix-run/react'
 import {
+  loadCookies,
   mailchimpApiKeyKey,
   mailchimpServerPrefixKey,
   onesignalAppIdKey,
@@ -15,9 +16,9 @@ export default function Mailchimp() {
     <>
       <div className="mt-6">
         <Link
-          to={(actionData?.exportLink as any) || ''}
+          to={(actionData?.downloadUrl as any) || ''}
           target="_blank"
-          className="font-l text-blue-600 dark:text-blue-500 hover:underline"
+          className="font-medium text-2xl text-blue-600 dark:text-blue-500 hover:underline"
         >
           Download...
         </Link>
@@ -25,6 +26,13 @@ export default function Mailchimp() {
       </div>
     </>
   )
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { mailchimpApiKey, onesignalAppId, mailchimpServerPrefix } =
+    await loadCookies(request)
+
+  return json({ mailchimpApiKey, onesignalAppId, mailchimpServerPrefix })
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -40,10 +48,11 @@ export async function action({ request }: ActionFunctionArgs) {
   cookie[mailchimpServerPrefixKey] = serverPrefix
 
   const mailchimpDao = buildMailchimpDao(apiKey, serverPrefix)
-  const exportLink = await mailchimpDao.generateExport()
+  const downloadedExport = await mailchimpDao.downloadExport('2468')
+
   return json(
     {
-      exportLink,
+      downloadUrl: downloadedExport.downloadUrl,
     },
     {
       headers: {
